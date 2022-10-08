@@ -10,6 +10,10 @@ import java.util.Scanner;
 public class Project1_jsiwiecki 
 {
     /**
+     * This program gets user input for a system of linear equations
+     * and uses Gaussian Elimination with Scaled Partial Pivoting
+     * to solve the system. The intermediate steps are displayed,
+     * and the solution is printed.
      * @param input             Used to gather user input.
      * @param numberOfEquations Number of equations in the augmented matrix.
      * @param augmentedMatrix   Augmented matrix that stores user input for
@@ -65,14 +69,14 @@ public class Project1_jsiwiecki
         augmentedMatrix = new double[numberOfEquations][numberOfEquations + 1];
         
         int choice = 0, numsEntered = 0;
-        boolean valid = false;
+        boolean done = false;
         
         System.out.print("Enter 1 to input values using CLI, enter 2 to input values using file input: ");
 
         Scanner eqInput = new Scanner(System.in);
         Scanner file = new Scanner(System.in);
 
-        while (valid == false) 
+        while (done == false) 
         {
             choice = input.nextInt();
 
@@ -95,7 +99,7 @@ public class Project1_jsiwiecki
                 }
                 
                 printAugmentedMatrix();
-                valid = true;
+                done = true;
             } 
             
             else if (choice == 2) 
@@ -121,7 +125,7 @@ public class Project1_jsiwiecki
                 }
                 
                 printAugmentedMatrix();
-                valid = true;
+                done = true;
 
             } 
             

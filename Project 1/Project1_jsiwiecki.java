@@ -136,8 +136,19 @@ public class Project1_jsiwiecki
         file.close();
     }
 
+    /**
+     * This function prints the augmented matrix in a neat format.
+     */
     private static void printAugmentedMatrix()
     {
-
+        for (double[] linearEquation : augmentedMatrix) 
+        {
+            for (double coefficient : linearEquation) 
+            {
+                System.out.print("[" + coefficient +"] ");
+            }
+            System.out.println();  
+        }
+        System.out.println();
     }
 }

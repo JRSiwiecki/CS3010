@@ -5,15 +5,16 @@ import java.util.Scanner;
  * @author Joseph Siwiecki
  *         Assignment: Programming Project 1
  *         Class: CS 3010.01
- *         Date: 10/7/22
+ *         Date: 10/9/22
  */
 public class Project1_jsiwiecki 
 {
     /**
      * This program gets user input for a system of linear equations
+     * either through the command line or through a file,
      * and uses Gaussian Elimination with Scaled Partial Pivoting
      * to solve the system. The intermediate steps are displayed,
-     * and the solution is
+     * and the solution is displayed.
      * @param input             Used to gather user input.
      * @param numberOfEquations Number of equations in the augmented matrix.
      * @param augmentedMatrix   Augmented matrix that stores user input for
@@ -30,6 +31,7 @@ public class Project1_jsiwiecki
         addEquationsToArray();
         gaussianEliminationWithScaledPartialPivoting();
         printAnswerArray();
+        
         input.close();
     }
 
@@ -103,16 +105,18 @@ public class Project1_jsiwiecki
                 printAugmentedMatrix();
                 System.out.println("---------------------------------------------");
                 done = true;
+
             } 
             
             else if (choice == 2) 
             {
-                String fileName = "";
-                System.out.println("Enter name of file [with extension]: ");
+                String filePath = "";
+                
+                System.out.println("Enter the full path of the file, along with the file extension [Use right click to paste file path]: ");
                 eqInput = new Scanner(System.in);
                 
-                fileName = eqInput.nextLine();
-                File inputFile = new File(fileName);
+                filePath = eqInput.nextLine();
+                File inputFile = new File(filePath);
                 file = new Scanner(inputFile);
 
                 while (augmentedMatrix.length > numsEntered && file.hasNextLine()) 
@@ -127,7 +131,9 @@ public class Project1_jsiwiecki
                     numsEntered++;
                 }
                 
+                System.out.println("\n------------- STARTING MATRIX -------------\n");
                 printAugmentedMatrix();
+                System.out.println("---------------------------------------------");
                 done = true;
 
             } 

@@ -30,6 +30,11 @@ public class Project1_jsiwiecki
     private static int numberOfEquations;
     private static double[][] augmentedMatrix;
     
+    
+    /** 
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException
     {
         getNumberOfEquations();

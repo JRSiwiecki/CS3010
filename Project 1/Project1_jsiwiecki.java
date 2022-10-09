@@ -29,6 +29,7 @@ public class Project1_jsiwiecki
         getNumberOfEquations();
         addEquationsToArray();
         gaussianEliminationWithScaledPartialPivoting();
+        printAnswerArray();
         input.close();
     }
 
@@ -98,7 +99,9 @@ public class Project1_jsiwiecki
                     numsEntered++;
                 }
                 
+                System.out.println("\n------------- STARTING MATRIX -------------\n");
                 printAugmentedMatrix();
+                System.out.println("---------------------------------------------");
                 done = true;
             } 
             
@@ -183,8 +186,45 @@ public class Project1_jsiwiecki
                 {
                     augmentedMatrix[i][j] = augmentedMatrix[i][j] - (scaledCoefficient * augmentedMatrix[pivot][j]);
                 }
+                System.out.println("\n------------- INTERMEDIATE STEP -------------\n");
                 printAugmentedMatrix();
+                System.out.println("---------------------------------------------\n");
             }
         }
+    }
+
+    private static void printAnswerArray()
+    {
+        double[] answerArray = new double[augmentedMatrix[0].length];
+
+        int minLength = (Math.min(augmentedMatrix[0].length - 1, augmentedMatrix.length - 1));
+
+        for (int i = minLength; i >= 0; i--)
+        {
+            double sum = 0.0;
+
+            for (int j = (i + 1); j < augmentedMatrix[0].length; j++)
+            {
+                sum += augmentedMatrix[i][j] * answerArray[j];
+            }
+
+            answerArray[i] = (augmentedMatrix[i][augmentedMatrix.length] - sum) / augmentedMatrix[i][i];
+
+            if (Double.isNaN(answerArray[i]))
+            {
+                System.out.println("ERROR: Matrix is unsolveable.");
+                return;
+            }
+        }
+
+        char[] variables = { 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
+
+        System.out.println("Solution: ");
+
+        for (int i = 0; i < augmentedMatrix.length; i++) {
+            System.out.print(variables[i] + " = " + answerArray[i] + "\n");
+        }
+
+        System.out.println();
     }
 }

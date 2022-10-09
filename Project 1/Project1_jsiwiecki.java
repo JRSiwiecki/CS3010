@@ -159,6 +159,10 @@ public class Project1_jsiwiecki
         System.out.println();
     }
 
+    /**
+     * Uses Gaussian Elimination with Scaled Partial Pivoting to solve augmented matrices
+     * holding up to 10 linear equations. Prints intermediate steps during solving process.
+     */
     private static void gaussianEliminationWithScaledPartialPivoting()
     {
         int maxLength = (Math.min(augmentedMatrix.length, augmentedMatrix[0].length));
@@ -193,6 +197,9 @@ public class Project1_jsiwiecki
         }
     }
 
+    /**
+     * Creates an array holding the solved variables and prints them.
+     */
     private static void printAnswerArray()
     {
         double[] answerArray = new double[augmentedMatrix[0].length];

@@ -264,7 +264,7 @@ public class Project1_jsiwiecki
          */
         char[] variables = { 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
 
-        System.out.println("Solved Varibles: ");
+        System.out.println("Solved Variables: ");
 
         for (int i = 0; i < augmentedMatrix.length; i++) 
         {

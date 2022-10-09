@@ -13,7 +13,7 @@ public class Project1_jsiwiecki
      * This program gets user input for a system of linear equations
      * and uses Gaussian Elimination with Scaled Partial Pivoting
      * to solve the system. The intermediate steps are displayed,
-     * and the solution is printed.
+     * and the solution is
      * @param input             Used to gather user input.
      * @param numberOfEquations Number of equations in the augmented matrix.
      * @param augmentedMatrix   Augmented matrix that stores user input for
@@ -28,7 +28,7 @@ public class Project1_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
-        
+        gaussianEliminationWithScaledPartialPivoting();
         input.close();
     }
 
@@ -154,5 +154,37 @@ public class Project1_jsiwiecki
             System.out.println();  
         }
         System.out.println();
+    }
+
+    private static void gaussianEliminationWithScaledPartialPivoting()
+    {
+        int maxLength = (Math.min(augmentedMatrix.length, augmentedMatrix[0].length));
+        for (int pivot = 0; pivot < maxLength; pivot++)
+        {
+            int maxCoefficient = pivot;
+
+            for (int i = (pivot + 1); i < augmentedMatrix.length; i++)
+            {
+                if (Math.abs(augmentedMatrix[i][pivot]) > Math.abs(augmentedMatrix[maxCoefficient][pivot]))
+                {
+                    maxCoefficient = i;
+                }
+            }
+            
+            double[] swapArray = augmentedMatrix[pivot];
+            augmentedMatrix[pivot] = augmentedMatrix[maxCoefficient];
+            augmentedMatrix[maxCoefficient] = swapArray;
+
+            for (int i = (pivot + 1); i < augmentedMatrix.length; i++)
+            {
+                double scaledCoefficient = augmentedMatrix[i][pivot] / augmentedMatrix[pivot][pivot];
+
+                for (int j = pivot; j < augmentedMatrix[0].length; j++)
+                {
+                    augmentedMatrix[i][j] = augmentedMatrix[i][j] - (scaledCoefficient * augmentedMatrix[pivot][j]);
+                }
+                printAugmentedMatrix();
+            }
+        }
     }
 }

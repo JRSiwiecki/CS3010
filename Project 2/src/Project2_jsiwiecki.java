@@ -1,11 +1,12 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
  * @author Joseph Siwiecki
- *         Assignment: Programming Project 1
+ *         Assignment: Programming Project 2
  *         Class: CS 3010.01
- *         Date: 10/9/22
+ *         Date: 10/19/22
  */
 public class Project2_jsiwiecki 
 {
@@ -29,6 +30,7 @@ public class Project2_jsiwiecki
     private static Scanner input = new Scanner(System.in);
     private static int numberOfEquations;
     private static double[][] augmentedMatrix;
+    private static double desiredError;
     
     
     /** 
@@ -39,10 +41,10 @@ public class Project2_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
-        gaussianEliminationWithScaledPartialPivoting();
+        jacobiIterativeMethod();
         printAnswerArray();
         
-        input.close();
+        // input.close();
     }
 
     /**
@@ -165,8 +167,8 @@ public class Project2_jsiwiecki
 
         } 
 
-        eqInput.close();
-        file.close();
+        // eqInput.close();
+        // file.close();
     }
 
     /**
@@ -185,6 +187,73 @@ public class Project2_jsiwiecki
         System.out.println();
     }
 
+    private static void jacobiIterativeMethod()
+    {
+        Scanner in = new Scanner(System.in); 
+        
+        double[] current = new double[augmentedMatrix.length];
+        double[] previous = new double[augmentedMatrix.length];
+
+        Arrays.fill(current, 0);
+        Arrays.fill(previous, 0);
+
+        System.out.print("Enter the desired level of error: ");
+        desiredError = in.nextDouble();
+
+        int iterations = 0;
+        boolean done = false;
+
+        while (!done)
+        {
+            for (int row = 0; row < augmentedMatrix.length; row++)
+            {
+                double sum = 0.0;
+
+                for (int col = 0; col < augmentedMatrix.length; col++)
+                {
+                    if (row != col)
+                    {
+                        sum += augmentedMatrix[row][col] * previous[col];
+                    }
+                }
+
+                current[row] = (1 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
+            }
+
+            System.out.print("\nIteration " + (iterations + 1) + " = ");
+
+            for (int i = 0; i < augmentedMatrix.length; i++)
+            {
+                System.out.print(current[i] + " ");
+            }
+
+            System.out.println();
+
+            iterations++;
+
+            boolean desiredErrorReached = false;
+
+            for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++)
+            {
+                double currentError = (Math.abs(current[i] - previous[i]) / current[i]);
+                
+                if (currentError > desiredError)
+                {
+                    desiredErrorReached = true;
+                }
+            }
+
+            if (desiredErrorReached || iterations >= 50)
+            {
+                break;
+            }
+
+            previous = current.clone();
+        }
+
+        // in.close();
+    }
+    
     /**
      * Uses Gaussian Elimination with Scaled Partial Pivoting to solve augmented matrices
      * holding up to 10 linear equations. Prints intermediate steps during solving process.

@@ -40,8 +40,12 @@ public class Project2_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
+        
+        chooseSolvingMethod();
+        
         jacobiIterativeMethod();
         gaussSeidelMethod();
+        
         printAnswerArray();
         
         // input.close();
@@ -185,6 +189,36 @@ public class Project2_jsiwiecki
             System.out.println();  
         }
         System.out.println();
+    }
+
+    private static void chooseSolvingMethod()
+    {
+        Scanner in = new Scanner(System.in);
+
+        boolean valid = false;
+
+        while (valid == false) 
+        {
+            System.out.print("Enter 1 to use Jacobi Iterative Method, or enter 2 to use Gauss Seidel Method: ");
+            int choice = input.nextInt();
+
+            if (choice == 1) 
+            {
+                jacobiIterativeMethod();
+                valid = true;
+            }
+
+            else if (choice == 2)
+            {
+                gaussSeidelMethod();
+                valid = true;
+            }
+
+            else 
+            {
+                System.out.println("Please enter a valid choice.");
+            }
+        }
     }
 
     private static void jacobiIterativeMethod()

@@ -13,13 +13,10 @@ public class Project2_jsiwiecki
     /**
      * This program gets user input for a system of linear equations
      * either through the command line or through a file,
-     * and uses Gaussian Elimination with Scaled Partial Pivoting
+     * and uses either the Jacobi Iterative method or the Gauss Seidel method
      * to solve the system. The intermediate steps are displayed,
      * and the solution is displayed.
      * 
-     * Using Gaussian Elimination with Scaled Partial Pivoting will be
-     * more accurate and precise than using Naive Gaussian Elimination or even
-     * just standard Partial Pivoting.
      * 
      * @param input             Used to gather user input.
      * @param numberOfEquations Number of equations in the augmented matrix.
@@ -32,6 +29,7 @@ public class Project2_jsiwiecki
     private static Scanner input = new Scanner(System.in);
     private static int numberOfEquations;
     private static double[][] augmentedMatrix;
+    private static double[] startingSolution;
     private static double desiredError;
     
     /** 
@@ -205,12 +203,14 @@ public class Project2_jsiwiecki
 
             if (choice == 1) 
             {
+                getStartingSolution();
                 jacobiIterativeMethod();
                 valid = true;
             }
 
             else if (choice == 2)
             {
+                getStartingSolution();
                 gaussSeidelMethod();
                 valid = true;
             }
@@ -220,6 +220,27 @@ public class Project2_jsiwiecki
                 System.out.println("Please enter a valid choice.");
             }
         }
+    }
+
+    private static void getStartingSolution()
+    {
+        Scanner in = new Scanner(System.in);
+        
+        startingSolution = new double[augmentedMatrix.length];
+        
+        System.out.println("Enter " + (startingSolution.length) + " values for the starting matrix: ");
+        in = new Scanner(System.in);
+
+        String input = in.nextLine();
+
+        String[] stringArray = input.split(" ");
+
+        for (int i = 0; i < (startingSolution.length); i++) 
+        {
+            startingSolution[i] = Integer.parseInt(stringArray[i]);
+        }
+
+        System.out.println();
     }
 
     /**
@@ -233,10 +254,8 @@ public class Project2_jsiwiecki
         System.out.print("Enter the desired level of error: ");
         desiredError = in.nextDouble();
         
-        double[] current = new double[augmentedMatrix.length];
         double[] previous = new double[augmentedMatrix.length];
 
-        Arrays.fill(current, 0);
         Arrays.fill(previous, 0);
 
         int iterations = 1;
@@ -265,7 +284,7 @@ public class Project2_jsiwiecki
                 /*
                  * 
                  */
-                current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
+                startingSolution[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 
             System.out.print("\nIteration " + iterations + " = ");
@@ -279,12 +298,12 @@ public class Project2_jsiwiecki
             {
                 if (i == augmentedMatrix.length - 1) 
                 {
-                    System.out.print(current[i]);
+                    System.out.print(startingSolution[i]);
                 }
 
                 else 
                 {
-                    System.out.print(current[i] + " ");
+                    System.out.print(startingSolution[i] + " ");
                 }
             }
 
@@ -301,7 +320,7 @@ public class Project2_jsiwiecki
              */ 
             for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++)
             {
-                double currentError = (Math.abs(current[i] - previous[i]) / current[i]);
+                double currentError = (Math.abs(startingSolution[i] - previous[i]) / startingSolution[i]);
                 
                 if (currentError > desiredError)
                 {
@@ -318,7 +337,7 @@ public class Project2_jsiwiecki
                 done = true;
             }
 
-            previous = current.clone();
+            previous = startingSolution.clone();
         }
 
         System.out.println();
@@ -332,11 +351,8 @@ public class Project2_jsiwiecki
     private static void gaussSeidelMethod()
     {
         Scanner in = new Scanner(System.in);
-
-        double[] current = new double[augmentedMatrix.length];
+        
         double[] previous = new double[augmentedMatrix.length];
-
-        Arrays.fill(current, 0);
 
         System.out.print("Enter the desired level of error: ");
         desiredError = in.nextDouble();
@@ -354,11 +370,11 @@ public class Project2_jsiwiecki
                 {
                     if (row != col)
                     {
-                        sum += augmentedMatrix[row][col] * current[col];
+                        sum += augmentedMatrix[row][col] * startingSolution[col];
                     }
                 }
 
-                current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
+                startingSolution[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 
             System.out.print("\nIteration " + iterations + " = ");
@@ -372,12 +388,12 @@ public class Project2_jsiwiecki
             {
                 if (i == augmentedMatrix.length - 1)
                 {
-                    System.out.print(current[i]);
+                    System.out.print(startingSolution[i]);
                 }
 
                 else 
                 {
-                    System.out.print(current[i] + " ");
+                    System.out.print(startingSolution[i] + " ");
                 }
             }
 
@@ -394,7 +410,7 @@ public class Project2_jsiwiecki
              */
             for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++) 
             {
-                double currentError = (Math.abs(current[i] - previous[i]) / current[i]);
+                double currentError = (Math.abs(startingSolution[i] - previous[i]) / startingSolution[i]);
 
                 if (currentError > desiredError) 
                 {
@@ -411,7 +427,7 @@ public class Project2_jsiwiecki
                 done = true;
             }
 
-            previous = current.clone();
+            previous = startingSolution.clone();
         }
 
         System.out.println();

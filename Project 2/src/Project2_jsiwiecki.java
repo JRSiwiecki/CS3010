@@ -40,12 +40,7 @@ public class Project2_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
-        
         chooseSolvingMethod();
-        
-        jacobiIterativeMethod();
-        gaussSeidelMethod();
-        
         printAnswerArray();
         
         // input.close();

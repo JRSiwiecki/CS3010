@@ -22,6 +22,7 @@ public class Project2_jsiwiecki
      * @param numberOfEquations Number of equations in the augmented matrix.
      * @param augmentedMatrix   Augmented matrix that stores user input for
      *                          coefficients.
+     * @param startingSolution  Array that indicates solution to start with before solving.
      * @param desiredError      The desired level of error to be achieved, designated
      *                          by the user.
      * @throws FileNotFoundException If file is not found, an FNFE will occur.

@@ -285,10 +285,7 @@ public class Project2_jsiwiecki
                         sum += augmentedMatrix[row][col] * previous[col];
                     }
                 }
-
-                /*
-                 * 
-                 */
+                
                 startingSolution[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 

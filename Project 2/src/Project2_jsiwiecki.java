@@ -25,6 +25,8 @@ public class Project2_jsiwiecki
      * @param numberOfEquations Number of equations in the augmented matrix.
      * @param augmentedMatrix   Augmented matrix that stores user input for
      *                          coefficients.
+     * @param desiredError      The desired level of error to be achieved, designated
+     *                          by the user.
      * @throws FileNotFoundException If file is not found, an FNFE will occur.
      */
     private static Scanner input = new Scanner(System.in);
@@ -73,7 +75,7 @@ public class Project2_jsiwiecki
     }
 
     /**
-     * This method gets user input for the coefficients of the linear equations,
+     * Gets user input for the coefficients of the linear equations,
      * and inputs them into the augmentedMatrix. The user can input the 
      * coefficients from the command line, or from a file.
      * @throws FileNotFoundException If file is not found, an FNFE will occur.
@@ -171,7 +173,7 @@ public class Project2_jsiwiecki
     }
 
     /**
-     * This function prints the augmented matrix in a neat format.
+     * Prints the augmented matrix in a neat format.
      */
     private static void printAugmentedMatrix()
     {
@@ -186,6 +188,10 @@ public class Project2_jsiwiecki
         System.out.println();
     }
 
+    /**
+     * Allows user to choose between solving the augmented matrix using the
+     * Jacobi Iterative method, or by using the Gauss Seidel method.
+     */
     private static void chooseSolvingMethod()
     {
         Scanner in = new Scanner(System.in);
@@ -216,6 +222,10 @@ public class Project2_jsiwiecki
         }
     }
 
+    /**
+     * Solves the supplied augmented matrix using the 
+     * Jacobi Iterative method.
+     */
     private static void jacobiIterativeMethod()
     {
         Scanner in = new Scanner(System.in); 
@@ -315,6 +325,10 @@ public class Project2_jsiwiecki
         // in.close();
     }
     
+    /**
+     * Solves the supplied matrix using the 
+     * Gauss Seidel method.
+     */
     private static void gaussSeidelMethod()
     {
         Scanner in = new Scanner(System.in);

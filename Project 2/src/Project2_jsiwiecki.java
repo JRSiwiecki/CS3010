@@ -243,7 +243,7 @@ public class Project2_jsiwiecki
                 }
             }
 
-            if (desiredErrorReached || iterations >= 50)
+            if (!desiredErrorReached || iterations >= 50)
             {
                 break;
             }
@@ -251,6 +251,7 @@ public class Project2_jsiwiecki
             previous = current.clone();
         }
 
+        System.out.println();
         // in.close();
     }
     

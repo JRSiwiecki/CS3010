@@ -32,7 +32,6 @@ public class Project2_jsiwiecki
     private static double[][] augmentedMatrix;
     private static double desiredError;
     
-    
     /** 
      * @param args
      * @throws FileNotFoundException
@@ -41,7 +40,8 @@ public class Project2_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
-        jacobiIterativeMethod();
+        // jacobiIterativeMethod();
+        gaussSeidelMethod();
         printAnswerArray();
         
         // input.close();
@@ -191,11 +191,99 @@ public class Project2_jsiwiecki
     {
         Scanner in = new Scanner(System.in); 
         
+        System.out.print("Enter the desired level of error: ");
+        desiredError = in.nextDouble();
+        
         double[] current = new double[augmentedMatrix.length];
         double[] previous = new double[augmentedMatrix.length];
 
         Arrays.fill(current, 0);
         Arrays.fill(previous, 0);
+
+        int iterations = 0;
+        boolean done = false;
+
+        while (!done)
+        {
+            /*
+             * 
+             */
+            for (int row = 0; row < augmentedMatrix.length; row++)
+            {
+                double sum = 0.0;
+
+                for (int col = 0; col < augmentedMatrix.length; col++)
+                {
+                    /*
+                     * Calculate sum for each element except those on the main diagonal.
+                     */
+                    if (row != col)
+                    {
+                        sum += augmentedMatrix[row][col] * previous[col];
+                    }
+                }
+
+                /*
+                 * 
+                 */
+                current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
+            }
+
+            System.out.print("\nIteration " + (iterations + 1) + " = ");
+
+            /*
+             * Print out current x column vector in rows.
+             */
+            for (int i = 0; i < augmentedMatrix.length; i++)
+            {
+                System.out.print("[");
+                System.out.print(current[i] + " ");
+                System.out.print("]");
+            }
+
+            System.out.println();
+
+            iterations++;
+
+            boolean desiredErrorReached = false;
+
+            /*
+             * Check for desired level of error.
+             */ 
+            for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++)
+            {
+                double currentError = (Math.abs(current[i] - previous[i]) / current[i]);
+                
+                if (currentError > desiredError)
+                {
+                    desiredErrorReached = true;
+                }
+            }
+
+            /*
+             * Either desired error has been reached or too many iterations have occurred,
+             * so stop iterating.
+             */
+            if (!desiredErrorReached || iterations >= 50)
+            {
+                done = true;
+            }
+
+            previous = current.clone();
+        }
+
+        System.out.println();
+        // in.close();
+    }
+    
+    private static void gaussSeidelMethod()
+    {
+        Scanner in = new Scanner(System.in);
+
+        double[] current = new double[augmentedMatrix.length];
+        double[] previous = new double[augmentedMatrix.length];
+
+        Arrays.fill(current, 0);
 
         System.out.print("Enter the desired level of error: ");
         desiredError = in.nextDouble();
@@ -208,23 +296,27 @@ public class Project2_jsiwiecki
             for (int row = 0; row < augmentedMatrix.length; row++)
             {
                 double sum = 0.0;
-
+                
                 for (int col = 0; col < augmentedMatrix.length; col++)
                 {
                     if (row != col)
                     {
-                        sum += augmentedMatrix[row][col] * previous[col];
+                        sum += augmentedMatrix[row][col] * current[col];
                     }
                 }
 
-                current[row] = (1 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
+                current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 
             System.out.print("\nIteration " + (iterations + 1) + " = ");
 
-            for (int i = 0; i < augmentedMatrix.length; i++)
-            {
+            /*
+             * Print out current x column vector in rows.
+             */
+            for (int i = 0; i < augmentedMatrix.length; i++) {
+                System.out.print("[");
                 System.out.print(current[i] + " ");
+                System.out.print("]");
             }
 
             System.out.println();
@@ -233,19 +325,26 @@ public class Project2_jsiwiecki
 
             boolean desiredErrorReached = false;
 
-            for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++)
+            /*
+             * Check for desired level of error.
+             */
+            for (int i = 0; i < augmentedMatrix.length && !desiredErrorReached; i++) 
             {
                 double currentError = (Math.abs(current[i] - previous[i]) / current[i]);
-                
-                if (currentError > desiredError)
+
+                if (currentError > desiredError) 
                 {
                     desiredErrorReached = true;
                 }
             }
 
-            if (!desiredErrorReached || iterations >= 50)
+            /*
+             * Either desired error has been reached or too many iterations have occurred,
+             * so stop iterating.
+             */
+            if (!desiredErrorReached || iterations >= 50) 
             {
-                break;
+                done = true;
             }
 
             previous = current.clone();
@@ -253,56 +352,6 @@ public class Project2_jsiwiecki
 
         System.out.println();
         // in.close();
-    }
-    
-    /**
-     * Uses Gaussian Elimination with Scaled Partial Pivoting to solve augmented matrices
-     * holding up to 10 linear equations. Prints intermediate steps during solving process.
-     */
-    private static void gaussianEliminationWithScaledPartialPivoting()
-    {
-        /*
-         * Find highest pivot value to prepare for swapping a row to work with partial pivoting.
-         */
-        int maxLength = (Math.min(augmentedMatrix.length, augmentedMatrix[0].length));
-        for (int pivot = 0; pivot < maxLength; pivot++)
-        {
-            int maxCoefficient = pivot;
-
-            for (int i = (pivot + 1); i < augmentedMatrix.length; i++)
-            {
-                if (Math.abs(augmentedMatrix[i][pivot]) > Math.abs(augmentedMatrix[maxCoefficient][pivot]))
-                {
-                    maxCoefficient = i;
-                }
-            }
-            
-            /*
-             * Swap array rows based on pivot values.
-             */
-            double[] swapArray = augmentedMatrix[pivot];
-            augmentedMatrix[pivot] = augmentedMatrix[maxCoefficient];
-            augmentedMatrix[maxCoefficient] = swapArray;
-
-            /*
-             * Calculate the scaled value for each array and convert augmentedMatrix' values
-             * to be consistent with the scaled value.
-             */
-            for (int i = (pivot + 1); i < augmentedMatrix.length; i++)
-            {
-                double scaledCoefficient = augmentedMatrix[i][pivot] / augmentedMatrix[pivot][pivot];
-
-                for (int j = pivot; j < augmentedMatrix[0].length; j++)
-                {
-                    augmentedMatrix[i][j] = augmentedMatrix[i][j] - (scaledCoefficient * augmentedMatrix[pivot][j]);
-                }
-                
-                System.out.println("\n------------- INTERMEDIATE STEP -------------\n");
-                printAugmentedMatrix();
-                System.out.println("---------------------------------------------\n");
-
-            }
-        }
     }
 
     /**

@@ -222,6 +222,10 @@ public class Project2_jsiwiecki
         }
     }
 
+    /**
+     * Allows user to input starting solution when solving with
+     * either Jacobi Iterative method or Gauss Seidel method.
+     */
     private static void getStartingSolution()
     {
         Scanner in = new Scanner(System.in);

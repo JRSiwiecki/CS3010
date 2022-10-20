@@ -463,16 +463,11 @@ public class Project2_jsiwiecki
             answerArray[i] = (augmentedMatrix[i][augmentedMatrix.length] - sum) / augmentedMatrix[i][i];
         }
 
-        /*
-         * Print the answer array with up to 10 variables.
-         */
-        char[] variables = { 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
-
         System.out.println("Solved Variables: ");
 
         for (int i = 0; i < augmentedMatrix.length; i++) 
         {
-            System.out.print(variables[i] + " = " + answerArray[i] + "\n");
+            System.out.print( "X" + (i + 1) + " = " + answerArray[i] + "\n");
         }
 
         System.out.println();

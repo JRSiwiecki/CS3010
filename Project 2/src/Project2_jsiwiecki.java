@@ -40,7 +40,7 @@ public class Project2_jsiwiecki
     {
         getNumberOfEquations();
         addEquationsToArray();
-        // jacobiIterativeMethod();
+        jacobiIterativeMethod();
         gaussSeidelMethod();
         printAnswerArray();
         
@@ -200,7 +200,7 @@ public class Project2_jsiwiecki
         Arrays.fill(current, 0);
         Arrays.fill(previous, 0);
 
-        int iterations = 0;
+        int iterations = 1;
         boolean done = false;
 
         while (!done)
@@ -229,17 +229,27 @@ public class Project2_jsiwiecki
                 current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 
-            System.out.print("\nIteration " + (iterations + 1) + " = ");
+            System.out.print("\nIteration " + iterations + " = ");
+
+            System.out.print("[");
 
             /*
              * Print out current x column vector in rows.
              */
-            for (int i = 0; i < augmentedMatrix.length; i++)
+            for (int i = 0; i < augmentedMatrix.length; i++) 
             {
-                System.out.print("[");
-                System.out.print(current[i] + " ");
-                System.out.print("]");
+                if (i == augmentedMatrix.length - 1) 
+                {
+                    System.out.print(current[i]);
+                }
+
+                else 
+                {
+                    System.out.print(current[i] + " ");
+                }
             }
+
+            System.out.print("]");
 
             System.out.println();
 
@@ -264,7 +274,7 @@ public class Project2_jsiwiecki
              * Either desired error has been reached or too many iterations have occurred,
              * so stop iterating.
              */
-            if (!desiredErrorReached || iterations >= 50)
+            if (!desiredErrorReached || iterations > 50)
             {
                 done = true;
             }
@@ -288,7 +298,7 @@ public class Project2_jsiwiecki
         System.out.print("Enter the desired level of error: ");
         desiredError = in.nextDouble();
 
-        int iterations = 0;
+        int iterations = 1;
         boolean done = false;
 
         while (!done)
@@ -308,16 +318,27 @@ public class Project2_jsiwiecki
                 current[row] = (1.0 / augmentedMatrix[row][row]) * (augmentedMatrix[row][augmentedMatrix.length] - sum);
             }
 
-            System.out.print("\nIteration " + (iterations + 1) + " = ");
+            System.out.print("\nIteration " + iterations + " = ");
 
+            System.out.print("[");
+            
             /*
              * Print out current x column vector in rows.
              */
-            for (int i = 0; i < augmentedMatrix.length; i++) {
-                System.out.print("[");
-                System.out.print(current[i] + " ");
-                System.out.print("]");
+            for (int i = 0; i < augmentedMatrix.length; i++) 
+            {
+                if (i == augmentedMatrix.length - 1)
+                {
+                    System.out.print(current[i]);
+                }
+
+                else 
+                {
+                    System.out.print(current[i] + " ");
+                }
             }
+
+            System.out.print("]");
 
             System.out.println();
 
@@ -342,7 +363,7 @@ public class Project2_jsiwiecki
              * Either desired error has been reached or too many iterations have occurred,
              * so stop iterating.
              */
-            if (!desiredErrorReached || iterations >= 50) 
+            if (!desiredErrorReached || iterations > 50) 
             {
                 done = true;
             }

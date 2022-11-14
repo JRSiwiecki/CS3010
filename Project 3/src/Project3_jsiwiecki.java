@@ -16,12 +16,18 @@ public class Project3_jsiwiecki
     
     public static void main(String[] args)
     {
-
+        bisectionTests();
+        newtonRaphsonTests();
+        secantTests();
+        falsePositionTests();
     }
 
     private static void bisectionTests()
     {
-
+        bisectionMethod(0.0, 1.0, 0.356316);
+        bisectionMethod(1.0, 2.0, 1.92174);
+        bisectionMethod(2.0, 3.0, 3.56316);
+        bisectionMethod(3.0, 4.0, 3.56316);
     }
 
     private static void newtonRaphsonTests() 
@@ -48,10 +54,73 @@ public class Project3_jsiwiecki
     {
         return (x + 10 - (x * Math.cosh((50.0 / x))));
     }
-    
-    private static void bisectionMethod()
+
+    private static double approximateError(double current, double previous)
     {
-        
+        double approximateError = (Math.abs(current - previous) / current);
+        return approximateError;
+    }
+
+    private static double realError(double current, double root)
+    {
+        double realError = (Math.abs(root - current) / root);
+        return realError;
+    }
+
+    private static void resetValues()
+    {
+        counter = 0;
+        c = 0;
+        previousC = 0;
+    }
+    
+    private static void bisectionMethod(double a, double b, double root)
+    {
+        System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " ---\n");
+
+        if (functionA(a) * functionA(b) >= 0)
+        {
+            System.out.println("No roots found within " + a + " and " + b + " .\n");
+            return;
+        }
+
+        c = a;
+
+        do
+        {
+            previousC = c;
+            c = (a + b) / 2;
+
+            if (functionA(c) == 0)
+            {
+                break;
+            }
+
+            else if (functionA(c) * functionA(a) < 0)
+            {
+                b = c;
+            }
+
+            else if (functionA(c) * functionA(b) < 0)
+            {
+                a = c;
+            }
+
+            counter++;
+
+            System.out.println("Iteration: " + counter);
+
+            System.out.printf(" x = %4.4f with relative error: %-4.2f with true error: %-6.2f",
+                    c, (approximateError(c, previousC) * 100), (realError(c, root) * 100));
+            
+            System.out.println("\n");
+
+        } while ((approximateError(c, previousC) >= error && counter < MAX_ITERATIONS));
+
+        System.out.print("As of " + counter + " iterations, ");
+        System.out.printf("x = %.4f", c);
+        System.out.println("\n------------------");
+        resetValues();
     }
 
     private static void newtonRaphsonMethod() 

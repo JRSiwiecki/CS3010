@@ -19,6 +19,26 @@ public class Project3_jsiwiecki
 
     }
 
+    private static void bisectionTests()
+    {
+
+    }
+
+    private static void newtonRaphsonTests() 
+    {
+
+    }
+    
+    private static void secantTests() 
+    {
+
+    }
+    
+    private static void falsePositionTests() 
+    {
+
+    }
+    
     private static double functionA(double x)
     {
         return ((2.0 * Math.pow(x, 3)) - (11.7 * Math.pow(x, 2)) + (17.7 * x) - 5);

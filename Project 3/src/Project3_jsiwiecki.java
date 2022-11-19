@@ -19,8 +19,8 @@ public class Project3_jsiwiecki
     {
         // bisectionTests();
         // newtonRaphsonTests();
-        secantTests();
-        // falsePositionTests();
+        // secantTests();
+        falsePositionTests();
     }
 
     private static void bisectionTests()
@@ -58,7 +58,13 @@ public class Project3_jsiwiecki
     
     private static void falsePositionTests() 
     {
+        falsePositionMethod(0.0, 4.0, 0.365, functionA);
+        falsePositionMethod(0.0, 3.0, 1.922, functionA);
+        falsePositionMethod(1.0, 3.0, 3.563, functionA);
 
+        falsePositionMethod(120.0, 130.0, 126.632, functionB);
+        falsePositionMethod(122.5, 127.5, 126.632, functionB);
+        falsePositionMethod(125.0, 130.0, 126.632, functionB);
     }
     
     /**
@@ -314,8 +320,77 @@ public class Project3_jsiwiecki
         resetValues();
     }
 
-    private static void falsePositionMethod() 
+    private static void falsePositionMethod(double a, double b, double root, boolean isFunctionA) 
     {
+        double aValue, bValue, cValue;
 
+        if (isFunctionA) 
+        {
+            System.out.println("\n--- False Position Method with input " + a + " and " + b + "  for Function A ---\n");
+            aValue = functionA(a);
+            bValue = functionA(b);
+            cValue = functionA(c);
+        }
+
+        else 
+        {
+            System.out.println("\n--- False Position Method with input " + a + " and " + b + "  for Function B ---\n");
+            aValue = functionB(a);
+            bValue = functionB(b);
+            cValue = functionB(c);
+        }
+        
+        c = a;
+
+        do 
+        {
+            if (isFunctionA)
+            {
+                aValue = functionA(a);
+                bValue = functionA(b);
+                cValue = functionA(c);
+            }
+
+            else
+            {
+                aValue = functionB(a);
+                bValue = functionB(b);
+                cValue = functionB(c);
+            }
+           
+            previousC = c;
+            c = a - ((aValue * (b - a)) / (bValue - aValue));
+
+            if (cValue == 0)
+            {
+                break;
+            }
+
+            else if (cValue * aValue < 0)
+            {
+                b = c;
+            } 
+
+            else if (cValue * bValue < 0)
+            {
+                a = c;
+            }
+
+            double approximation = Math.abs(approximateError(c, previousC) * 100);
+            double trueError = Math.abs(realError(c, root) * 100);
+            counter++;
+
+            System.out.println("Iteration: " + counter);
+
+            System.out.printf(" x = %4.4f with relative error: %-4.2f with true error: %-6.2f",
+                    c, approximation, trueError);
+
+            System.out.println("\n");
+        } while (approximateError(c, previousC) >= error && counter < MAX_ITERATIONS);
+
+        System.out.print("As of " + counter + " iterations, ");
+        System.out.printf("x = %.4f", c);
+        System.out.println("\n------------------");
+        resetValues();
     }
 }

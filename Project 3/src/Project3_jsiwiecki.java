@@ -1,4 +1,3 @@
-
 /**
  * @author Joseph Siwiecki
  *         Assignment: Programming Project 2
@@ -7,6 +6,18 @@
  */
 public class Project3_jsiwiecki 
 {
+    /**
+     * This program uses various root finding methods to find the root
+     * in provided equations.
+     * 
+     * @param MAX_ITERATIONS The maximum number of iterations to perform.
+     * @param error The error value we would like to reach, 1%.
+     * @param counter Keeps track of number of iterations
+     * @param c The final value we achieved through calculations
+     * @param previousC The value we use to track each iteration's final value.
+     * @param functionA Tracks if we are using functionA.
+     * @param functionB Tracks if we are using functionB
+     */
     private static final int MAX_ITERATIONS = 100;
     private static double error = 0.01;
     private static int counter = 0;
@@ -15,14 +26,22 @@ public class Project3_jsiwiecki
     private static boolean functionA = true;
     private static boolean functionB = false;
     
+    /**
+     * Runs tests of each root finding method.
+     * @param args
+     */
     public static void main(String[] args)
     {
         // bisectionTests();
         // newtonRaphsonTests();
         // secantTests();
-        falsePositionTests();
+        // falsePositionTests();
     }
 
+    
+    /**
+     * Bisection method tests.
+     */
     private static void bisectionTests()
     {
         bisectionMethod(0.0, 4.0, 0.365, functionA);
@@ -34,6 +53,9 @@ public class Project3_jsiwiecki
         bisectionMethod(125.0, 130.0, 126.632, functionB);
     }
 
+    /**
+     * Newton-Raphson method tests.
+     */
     private static void newtonRaphsonTests() 
     {
         newtonRaphsonMethod(1.0, 0.365, functionA);
@@ -45,6 +67,9 @@ public class Project3_jsiwiecki
         newtonRaphsonMethod(130.0, 126.632, functionB);
     }
     
+    /**
+     * Secant method tests.
+     */
     private static void secantTests() 
     {
         secantMethod(0.0, 4.0, 0.365, functionA);
@@ -56,6 +81,9 @@ public class Project3_jsiwiecki
         secantMethod(125.0, 130.0, 126.632, functionB);
     }
     
+    /**
+     * False Position method tests.
+     */
     private static void falsePositionTests() 
     {
         falsePositionMethod(0.0, 4.0, 0.365, functionA);
@@ -70,6 +98,7 @@ public class Project3_jsiwiecki
     /**
      * Quick calculation for Function A
      * Function A: 2x^3 - 11.7x^2 + 17.7x - 5
+     * 
      * @param x Value to be plugged in for the function.
      * @return The input value for functionA
      */
@@ -78,33 +107,71 @@ public class Project3_jsiwiecki
         return ((2.0 * Math.pow(x, 3)) - (11.7 * Math.pow(x, 2)) + (17.7 * x) - 5);
     }
 
+    /**
+     * Quick calculation for Function B
+     * Function B: x + 10 - xcosh(50 / x)
+     * 
+     * @param x Value to be plugged in for the function.
+     * @return The input value for functionB
+     */
     private static double functionB(double x)
     {
         return (x + 10 - (x * Math.cosh((50.0 / x))));
     }
 
+    /**
+     * Quick calculation for the derivative of Function A
+     * Function A Derivative: 6x^2 - 23.4x + 17.7
+     * 
+     * @param x Value to be plugged in for the function.
+     * @return The input value for functionA
+     */
     private static double functionAPrime(double x)
     {
         return ((6.0 * Math.pow(x, 2)) - (23.4 * (x)) + 17.7);
     }
 
+    /**
+     * Quick calculation for the derivative of Function B
+     * Function B Derivative: ((50 * sinh(50 / x)) / x) - (cosh(50 / x) + 1)
+     * 
+     * @param x Value to be plugged in for the function.
+     * @return The input value for functionB
+     */
     private static double functionBPrime(double x)
     {
         return ((50.0 * (Math.sinh(50.0 / x))) / x) - Math.cosh(50.0 / x) + 1.0;
     }
 
+    /**
+     * Approximate error calculation function.
+     * 
+     * @param current The current value.
+     * @param previous The previous error value.
+     * @return The approximate error as a double.
+     */
     private static double approximateError(double current, double previous)
     {
         double approximateError = (Math.abs(current - previous) / current);
         return approximateError;
     }
 
+    /**
+     * Calculates the actual error value based on the root.
+     * 
+     * @param current The current value.
+     * @param root The root value.
+     * @return The real error value as a double.
+     */
     private static double realError(double current, double root)
     {
         double realError = (Math.abs(root - current) / root);
         return realError;
     }
 
+    /**
+     * Resets counter, c, and previousC values to prepare for new calculations.
+     */
     private static void resetValues()
     {
         counter = 0;
@@ -112,6 +179,16 @@ public class Project3_jsiwiecki
         previousC = 0;
     }
     
+    /**
+     * Uses the bisection method to find the root in an initial given interval.
+     * Prints out calculations at each iteration and prints final calculation
+     * once the error level is achieved.
+     * 
+     * @param a Input a.
+     * @param b Input b.
+     * @param root Real root value used for error calculations.
+     * @param isFunctionA Check if we are testing for function A or function B.
+     */
     private static void bisectionMethod(double a, double b, double root, boolean isFunctionA)
     {
         double aValue, bValue, cValue;
@@ -191,6 +268,15 @@ public class Project3_jsiwiecki
         resetValues();
     }
 
+    /**
+     * Uses the Newton-Raphson method to find the root with an initial starting point.
+     * Prints out calculations at each iteration and prints final calculation
+     * once the error level is achieved.
+     * 
+     * @param a Input a
+     * @param root Real root value used for error calculations.
+     * @param isFunctionA Check if we are testing for function A or function B.
+     */
     private static void newtonRaphsonMethod(double a, double root, boolean isFunctionA) 
     {
         double value, valuePrime;
@@ -258,6 +344,16 @@ public class Project3_jsiwiecki
         
     }
 
+    /**
+     * Uses the Secant method to find the root with an initial starting interval.
+     * Prints out calculations at each iteration and prints final calculation
+     * once the error level is achieved.
+     * 
+     * @param a Input a
+     * @param b Input b
+     * @param root Real root value used for error calculations.
+     * @param isFunctionA Check if we are testing for function A or function B.
+     */
     private static void secantMethod(double a, double b, double root, boolean isFunctionA) 
     {
         double aValue, bValue;
@@ -320,6 +416,16 @@ public class Project3_jsiwiecki
         resetValues();
     }
 
+    /**
+     * Uses the False Position method to find the root with an initial starting interval.
+     * Prints out calculations at each iteration and prints final calculation
+     * once the error level is achieved.
+     * 
+     * @param a Input a
+     * @param b Input b
+     * @param root Real root value used for error calculations.
+     * @param isFunctionA Check if we are testing for function A or function B.
+     */
     private static void falsePositionMethod(double a, double b, double root, boolean isFunctionA) 
     {
         double aValue, bValue, cValue;

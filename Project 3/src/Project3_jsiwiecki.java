@@ -19,31 +19,31 @@ public class Project3_jsiwiecki
     public static void main(String[] args)
     {
         // bisectionTests();
-        // newtonRaphsonTests();
-        secantTests();
-        falsePositionTests();
+        newtonRaphsonTests();
+        // secantTests();
+        // falsePositionTests();
     }
 
     private static void bisectionTests()
     {
-        bisectionMethod(0.0, 1.0, 0.356316, functionA);
-        bisectionMethod(1.0, 2.0, 1.92174, functionA);
-        bisectionMethod(2.0, 3.0, 3.56316, functionA);
+        bisectionMethod(0.0, 4.0, 0.365, functionA);
+        bisectionMethod(0.0, 3.0, 1.922, functionA);
+        bisectionMethod(1.0, 3.0, 3.563, functionA);
 
-        bisectionMethod(0.0, 1.0, 0.356316, functionB);
-        bisectionMethod(1.0, 2.0, 1.92174, functionB);
-        bisectionMethod(2.0, 3.0, 3.56316, functionB);
+        bisectionMethod(120.0, 130.0, 126.632, functionB);
+        bisectionMethod(122.5, 127.5, 126.632, functionB);
+        bisectionMethod(125.0, 130.0, 126.632, functionB);
     }
 
     private static void newtonRaphsonTests() 
     {
-        newtonRaphsonMethod(0.0, 0.365098, functionA);
-        newtonRaphsonMethod(2.0, 1.92174, functionA);
-        newtonRaphsonMethod(3.0, 0.356316, functionA);
+        newtonRaphsonMethod(1.0, 0.365, functionA);
+        newtonRaphsonMethod(2.0, 1.922, functionA);
+        newtonRaphsonMethod(3.0, 3.563, functionA);
 
-        newtonRaphsonMethod(0.0, 0.365098, functionB);
-        newtonRaphsonMethod(2.0, 1.92174, functionB);
-        newtonRaphsonMethod(3.0, 0.356316, functionB);
+        newtonRaphsonMethod(120.0, 126.632, functionB);
+        newtonRaphsonMethod(125.0, 126.632, functionB);
+        newtonRaphsonMethod(130.0, 126.632, functionB);
     }
     
     private static void secantTests() 
@@ -121,7 +121,7 @@ public class Project3_jsiwiecki
             cValue = functionB(c);
         }
         
-        if (aValue * bValue >= 0)
+        if (aValue * bValue >= 0 || (aValue * bValue == Double.NaN))
         {
             System.out.println("No roots found within " + a + " and " + b + " .\n");
             return;
@@ -212,6 +212,11 @@ public class Project3_jsiwiecki
             {
                 value = functionB(a);
                 valuePrime = functionBPrime(a);
+
+                if (value == Double.NaN || valuePrime == Double.NaN) 
+                {
+                    return;
+                }
             }
             
             c = a - (value / valuePrime);

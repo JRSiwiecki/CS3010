@@ -38,7 +38,6 @@ public class Project3_jsiwiecki
         // falsePositionTests();
     }
 
-    
     /**
      * Bisection method tests.
      */

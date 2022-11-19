@@ -193,6 +193,9 @@ public class Project3_jsiwiecki
     {
         double aValue, bValue, cValue;
 
+        c = a;
+        
+        // Get initial function outputs for a, b, and c based on function to test
         if (isFunctionA)
         {
             System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " for Function A ---\n");
@@ -209,16 +212,22 @@ public class Project3_jsiwiecki
             cValue = functionB(c);
         }
         
-        if (aValue * bValue >= 0 || (aValue * bValue == Double.NaN))
+        // If the outputs of a and b from the function are not negative, then a root is not 
+        // found in the given interval.
+        if (aValue * bValue >= 0)
         {
             System.out.println("No roots found within " + a + " and " + b + " .\n");
             return;
         }
 
-        c = a;
-
         do
         {
+            // Store the previous c value before calculating new one, to
+            // calculate error values later.
+            previousC = c;
+            c = (a + b) / 2;
+            
+            // Calculate new outputs for each iteration.
             if (isFunctionA)
             {
                 aValue = functionA(a);
@@ -232,31 +241,36 @@ public class Project3_jsiwiecki
                 bValue = functionB(b);
                 cValue = functionB(c);
             }
-
-            previousC = c;
-            c = (a + b) / 2;
-
+            
+            // if the output of the function using c is 0, then we are at the root.
             if (cValue == 0)
             {
                 break;
             }
 
+            // If the outputs of the function with a and c are negative, then we need to 
+            // move closer to b.
             else if (cValue * aValue < 0)
             {
                 b = c;
             }
 
+            // If the outputs of the function with a and c are negative, then we need to
+            // move closer to a.
             else if (cValue * bValue < 0)
             {
                 a = c;
             }
 
+            // Calculate error values and increment counter
+            double approximation = approximateError(c, previousC) * 100;
+            double trueError = realError(c, root) * 100;
             counter++;
 
             System.out.println("Iteration: " + counter);
 
             System.out.printf(" x = %4.4f with relative error: %-4.2f with true error: %-6.2f",
-                    c, (approximateError(c, previousC) * 100), (realError(c, root) * 100));
+                    c, approximation, trueError);
             
             System.out.println("\n");
 
@@ -283,6 +297,7 @@ public class Project3_jsiwiecki
         
         boolean done = false;
 
+        // Get initial function outputs for a based on function and its derivative to test
         if (isFunctionA)
         {
             System.out.println("\n--- Newton-Raphson Method with input " + a + " for Function A ---\n");
@@ -299,6 +314,9 @@ public class Project3_jsiwiecki
         
         while (!done && counter < MAX_ITERATIONS)
         {
+            // Calculate new c value to test
+            c = a - (value / valuePrime);
+            
             if (isFunctionA)
             {
                 value = functionA(a);
@@ -309,15 +327,9 @@ public class Project3_jsiwiecki
             {
                 value = functionB(a);
                 valuePrime = functionBPrime(a);
-
-                if (value == Double.NaN || valuePrime == Double.NaN) 
-                {
-                    return;
-                }
             }
-            
-            c = a - (value / valuePrime);
 
+            // Calculate error values and increment counter
             double approximation = Math.abs(approximateError(c, a) * 100);
             double trueError = Math.abs(realError(c, root) * 100);
             counter++;
@@ -329,6 +341,7 @@ public class Project3_jsiwiecki
             
             System.out.println("\n");
 
+            // Next iteration, a will be the new value to test
             a = c;
 
             if (error > approximation)
@@ -358,6 +371,7 @@ public class Project3_jsiwiecki
     {
         double aValue, bValue;
         
+        // Calculate initial a and b values based on function to test
         if (isFunctionA)
         {
             System.out.println("\n--- Secant Method with input " + a + " and " + b + "  for Function A ---\n");
@@ -388,8 +402,10 @@ public class Project3_jsiwiecki
                 bValue = functionB(b);
             }
 
+            // Calculate new c value
             c = b - ((bValue) * (b - a)) / (bValue - aValue);
 
+            // Calculate error values and increment counter
             double approximation = Math.abs(approximateError(c, a) * 100);
             double trueError = Math.abs(realError(c, root) * 100);
             counter++;

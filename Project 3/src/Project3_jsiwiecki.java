@@ -62,6 +62,16 @@ public class Project3_jsiwiecki
         return (x + 10 - (x * Math.cosh((50.0 / x))));
     }
 
+    private static double functionAPrime(double x)
+    {
+        return ((6.0 * Math.pow(x, 2)) - (23.4 * (x)) + 17.7);
+    }
+
+    private static double functionBPrime(double x)
+    {
+        return ((50.0 * (Math.sinh(50.0 / x))) / x) - Math.cosh(50.0 / x) + 1.0;
+    }
+
     private static double approximateError(double current, double previous)
     {
         double approximateError = (Math.abs(current - previous) / current);
@@ -146,9 +156,11 @@ public class Project3_jsiwiecki
         resetValues();
     }
 
-    private static void newtonRaphsonMethod() 
+    private static void newtonRaphsonMethod(double a, double root, boolean isFunctionA) 
     {
+        System.out.println("\n--- Newton-Raphson Method with input " + a + " ---\n");
 
+        
     }
 
     private static void secantMethod() 

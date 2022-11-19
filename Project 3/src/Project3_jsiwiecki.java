@@ -35,7 +35,7 @@ public class Project3_jsiwiecki
         // bisectionTests();
         // newtonRaphsonTests();
         // secantTests();
-        // falsePositionTests();
+        falsePositionTests();
     }
 
     /**
@@ -43,9 +43,9 @@ public class Project3_jsiwiecki
      */
     private static void bisectionTests()
     {
-        bisectionMethod(0.0, 4.0, 0.365, functionA);
-        bisectionMethod(0.0, 3.0, 1.922, functionA);
-        bisectionMethod(1.0, 3.0, 3.563, functionA);
+        bisectionMethod(0.0, 1.0, 0.365, functionA);
+        bisectionMethod(3.0, 4.0, 3.563, functionA);
+        bisectionMethod(1.0, 3.0, 1.922, functionA);
 
         bisectionMethod(120.0, 130.0, 126.632, functionB);
         bisectionMethod(122.5, 127.5, 126.632, functionB);
@@ -57,9 +57,9 @@ public class Project3_jsiwiecki
      */
     private static void newtonRaphsonTests() 
     {
-        newtonRaphsonMethod(1.0, 0.365, functionA);
-        newtonRaphsonMethod(2.0, 1.922, functionA);
-        newtonRaphsonMethod(3.0, 3.563, functionA);
+        newtonRaphsonMethod(0.0, 0.365, functionA);
+        newtonRaphsonMethod(3.0, 1.922, functionA);
+        newtonRaphsonMethod(1.0, 3.563, functionA);
 
         newtonRaphsonMethod(120.0, 126.632, functionB);
         newtonRaphsonMethod(125.0, 126.632, functionB);
@@ -71,9 +71,9 @@ public class Project3_jsiwiecki
      */
     private static void secantTests() 
     {
-        secantMethod(0.0, 4.0, 0.365, functionA);
-        secantMethod(0.0, 3.0, 1.922, functionA);
-        secantMethod(1.0, 3.0, 3.563, functionA);
+        secantMethod(0.0, 1.0, 0.365, functionA);
+        secantMethod(3.0, 4.0, 3.563, functionA);
+        secantMethod(1.0, 3.0, 1.922, functionA);
 
         secantMethod(120.0, 130.0, 126.632, functionB);
         secantMethod(122.5, 127.5, 126.632, functionB);
@@ -85,9 +85,9 @@ public class Project3_jsiwiecki
      */
     private static void falsePositionTests() 
     {
-        falsePositionMethod(0.0, 4.0, 0.365, functionA);
-        falsePositionMethod(0.0, 3.0, 1.922, functionA);
-        falsePositionMethod(1.0, 3.0, 3.563, functionA);
+        falsePositionMethod(0.0, 1.0, 0.365, functionA);
+        falsePositionMethod(3.0, 4.0, 3.563, functionA);
+        falsePositionMethod(1.0, 3.0, 1.922, functionA);
 
         falsePositionMethod(120.0, 130.0, 126.632, functionB);
         falsePositionMethod(122.5, 127.5, 126.632, functionB);
@@ -445,6 +445,8 @@ public class Project3_jsiwiecki
     {
         double aValue, bValue, cValue;
 
+        c = a;
+
         if (isFunctionA) 
         {
             System.out.println("\n--- False Position Method with input " + a + " and " + b + "  for Function A ---\n");
@@ -460,11 +462,12 @@ public class Project3_jsiwiecki
             bValue = functionB(b);
             cValue = functionB(c);
         }
-        
-        c = a;
 
         do 
         {
+            previousC = c;
+            c = a - ((aValue * (b - a)) / (bValue - aValue));
+            
             if (isFunctionA)
             {
                 aValue = functionA(a);
@@ -478,9 +481,6 @@ public class Project3_jsiwiecki
                 bValue = functionB(b);
                 cValue = functionB(c);
             }
-           
-            previousC = c;
-            c = a - ((aValue * (b - a)) / (bValue - aValue));
 
             if (cValue == 0)
             {

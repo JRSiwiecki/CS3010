@@ -13,6 +13,8 @@ public class Project3_jsiwiecki
     private static int counter = 0;
     private static double c = 0.0;
     private static double previousC = 0.0;
+    private static boolean functionA = true;
+    private static boolean functionB = false;
     
     public static void main(String[] args)
     {
@@ -24,10 +26,15 @@ public class Project3_jsiwiecki
 
     private static void bisectionTests()
     {
-        bisectionMethod(0.0, 1.0, 0.356316);
-        bisectionMethod(1.0, 2.0, 1.92174);
-        bisectionMethod(2.0, 3.0, 3.56316);
-        bisectionMethod(3.0, 4.0, 3.56316);
+        bisectionMethod(0.0, 1.0, 0.356316, functionA);
+        bisectionMethod(1.0, 2.0, 1.92174, functionA);
+        bisectionMethod(2.0, 3.0, 3.56316, functionA);
+        bisectionMethod(3.0, 4.0, 3.56316, functionA);
+
+        bisectionMethod(0.0, 1.0, 0.356316, functionB);
+        bisectionMethod(1.0, 2.0, 1.92174, functionB);
+        bisectionMethod(2.0, 3.0, 3.56316, functionB);
+        bisectionMethod(3.0, 4.0, 3.56316, functionB);
     }
 
     private static void newtonRaphsonTests() 
@@ -74,11 +81,27 @@ public class Project3_jsiwiecki
         previousC = 0;
     }
     
-    private static void bisectionMethod(double a, double b, double root)
+    private static void bisectionMethod(double a, double b, double root, boolean isFunctionA)
     {
+        double aValue, bValue, cValue;
+        
         System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " ---\n");
 
-        if (functionA(a) * functionA(b) >= 0)
+        if (isFunctionA)
+        {
+            aValue = functionA(a);
+            bValue = functionA(b);
+            cValue = functionA(c);
+        }
+
+        else
+        {
+            aValue = functionB(a);
+            bValue = functionB(b);
+            cValue = functionB(c);
+        }
+        
+        if (aValue * bValue >= 0)
         {
             System.out.println("No roots found within " + a + " and " + b + " .\n");
             return;
@@ -91,17 +114,17 @@ public class Project3_jsiwiecki
             previousC = c;
             c = (a + b) / 2;
 
-            if (functionA(c) == 0)
+            if (cValue == 0)
             {
                 break;
             }
 
-            else if (functionA(c) * functionA(a) < 0)
+            else if (cValue * aValue < 0)
             {
                 b = c;
             }
 
-            else if (functionA(c) * functionA(b) < 0)
+            else if (cValue * bValue < 0)
             {
                 a = c;
             }

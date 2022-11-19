@@ -18,8 +18,8 @@ public class Project3_jsiwiecki
     
     public static void main(String[] args)
     {
-        bisectionTests();
-        newtonRaphsonTests();
+        // bisectionTests();
+        // newtonRaphsonTests();
         secantTests();
         falsePositionTests();
     }
@@ -29,17 +29,21 @@ public class Project3_jsiwiecki
         bisectionMethod(0.0, 1.0, 0.356316, functionA);
         bisectionMethod(1.0, 2.0, 1.92174, functionA);
         bisectionMethod(2.0, 3.0, 3.56316, functionA);
-        bisectionMethod(3.0, 4.0, 3.56316, functionA);
 
         bisectionMethod(0.0, 1.0, 0.356316, functionB);
         bisectionMethod(1.0, 2.0, 1.92174, functionB);
         bisectionMethod(2.0, 3.0, 3.56316, functionB);
-        bisectionMethod(3.0, 4.0, 3.56316, functionB);
     }
 
     private static void newtonRaphsonTests() 
     {
+        newtonRaphsonMethod(0.0, 0.365098, functionA);
+        newtonRaphsonMethod(2.0, 1.92174, functionA);
+        newtonRaphsonMethod(3.0, 0.356316, functionA);
 
+        newtonRaphsonMethod(0.0, 0.365098, functionB);
+        newtonRaphsonMethod(2.0, 1.92174, functionB);
+        newtonRaphsonMethod(3.0, 0.356316, functionB);
     }
     
     private static void secantTests() 
@@ -52,6 +56,12 @@ public class Project3_jsiwiecki
 
     }
     
+    /**
+     * Quick calculation for Function A
+     * Function A: 2x^3 - 11.7x^2 + 17.7x - 5
+     * @param x Value to be plugged in for the function.
+     * @return The input value for functionA
+     */
     private static double functionA(double x)
     {
         return ((2.0 * Math.pow(x, 3)) - (11.7 * Math.pow(x, 2)) + (17.7 * x) - 5);
@@ -94,11 +104,10 @@ public class Project3_jsiwiecki
     private static void bisectionMethod(double a, double b, double root, boolean isFunctionA)
     {
         double aValue, bValue, cValue;
-        
-        System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " ---\n");
 
         if (isFunctionA)
         {
+            System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " for Function A ---\n");
             aValue = functionA(a);
             bValue = functionA(b);
             cValue = functionA(c);
@@ -106,6 +115,7 @@ public class Project3_jsiwiecki
 
         else
         {
+            System.out.println("\n--- Bisection Method with inputs " + a + " and " + b + " for Function B ---\n");
             aValue = functionB(a);
             bValue = functionB(b);
             cValue = functionB(c);
@@ -121,6 +131,20 @@ public class Project3_jsiwiecki
 
         do
         {
+            if (isFunctionA)
+            {
+                aValue = functionA(a);
+                bValue = functionA(b);
+                cValue = functionA(c);
+            }
+
+            else
+            {
+                aValue = functionB(a);
+                bValue = functionB(b);
+                cValue = functionB(c);
+            }
+
             previousC = c;
             c = (a + b) / 2;
 
@@ -158,8 +182,63 @@ public class Project3_jsiwiecki
 
     private static void newtonRaphsonMethod(double a, double root, boolean isFunctionA) 
     {
-        System.out.println("\n--- Newton-Raphson Method with input " + a + " ---\n");
+        double value, valuePrime;
+        
+        boolean done = false;
 
+        if (isFunctionA)
+        {
+            System.out.println("\n--- Newton-Raphson Method with input " + a + " for Function A ---\n");
+            value = functionA(a);
+            valuePrime = functionAPrime(a);
+        }
+
+        else
+        {
+            System.out.println("\n--- Newton-Raphson Method with input " + a + " for Function B ---\n");
+            value = functionB(a);
+            valuePrime = functionBPrime(a);
+        }
+        
+        while (!done && counter < MAX_ITERATIONS)
+        {
+            if (isFunctionA)
+            {
+                value = functionA(a);
+                valuePrime = functionAPrime(a);
+            }
+
+            else
+            {
+                value = functionB(a);
+                valuePrime = functionBPrime(a);
+            }
+            
+            c = a - (value / valuePrime);
+
+            double approximation = Math.abs(approximateError(c, a) * 100);
+            double trueError = Math.abs(realError(c, root) * 100);
+            counter++;
+
+            System.out.println("Iteration: " + counter);
+
+            System.out.printf(" x = %4.4f with relative error: %-4.2f with true error: %-6.2f",
+                    c, approximation, trueError);
+            
+            System.out.println("\n");
+
+            a = c;
+
+            if (error > approximation)
+            {
+                done = true;
+            }
+        }
+
+        System.out.print("As of " + counter + " iterations, ");
+        System.out.printf("x = %.4f", c);
+        System.out.println("\n------------------");
+        resetValues();
         
     }
 

@@ -61,8 +61,6 @@ public class Project3_jsiwiecki
         newtonRaphsonMethod(2.0, 1.922, functionA);
         newtonRaphsonMethod(3.0, 3.563, functionA);
 
-        newtonRaphsonMethod(125.0, 126.632, functionB);
-        newtonRaphsonMethod(126.0, 126.632, functionB);
         newtonRaphsonMethod(127.0, 126.632, functionB);
     }
     
@@ -75,8 +73,6 @@ public class Project3_jsiwiecki
         secantMethod(3.0, 4.0, 3.563, functionA);
         secantMethod(1.0, 3.0, 1.922, functionA);
 
-        secantMethod(120.0, 130.0, 126.632, functionB);
-        secantMethod(122.5, 127.5, 126.632, functionB);
         secantMethod(125.0, 130.0, 126.632, functionB);
     }
     
@@ -89,8 +85,6 @@ public class Project3_jsiwiecki
         falsePositionMethod(3.0, 4.0, 3.563, functionA);
         falsePositionMethod(1.0, 3.0, 1.922, functionA);
 
-        falsePositionMethod(120.0, 130.0, 126.632, functionB);
-        falsePositionMethod(122.5, 127.5, 126.632, functionB);
         falsePositionMethod(125.0, 130.0, 126.632, functionB);
     }
     

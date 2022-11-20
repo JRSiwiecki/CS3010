@@ -33,8 +33,8 @@ public class Project3_jsiwiecki
     public static void main(String[] args)
     {
         // bisectionTests();
-        newtonRaphsonTests();
-        // secantTests();
+        // newtonRaphsonTests();
+        secantTests();
         // falsePositionTests();
     }
 
@@ -48,8 +48,6 @@ public class Project3_jsiwiecki
         bisectionMethod(1.0, 3.0, 1.922, functionA);
 
         bisectionMethod(120.0, 130.0, 126.632, functionB);
-        bisectionMethod(122.5, 127.5, 126.632, functionB);
-        bisectionMethod(125.0, 130.0, 126.632, functionB);
     }
 
     /**

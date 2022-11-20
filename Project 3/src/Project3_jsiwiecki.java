@@ -33,9 +33,9 @@ public class Project3_jsiwiecki
     public static void main(String[] args)
     {
         // bisectionTests();
-        // newtonRaphsonTests();
+        newtonRaphsonTests();
         // secantTests();
-        falsePositionTests();
+        // falsePositionTests();
     }
 
     /**
@@ -58,8 +58,8 @@ public class Project3_jsiwiecki
     private static void newtonRaphsonTests() 
     {
         newtonRaphsonMethod(0.0, 0.365, functionA);
-        newtonRaphsonMethod(3.0, 1.922, functionA);
-        newtonRaphsonMethod(1.0, 3.563, functionA);
+        newtonRaphsonMethod(2.0, 1.922, functionA);
+        newtonRaphsonMethod(3.0, 3.563, functionA);
 
         newtonRaphsonMethod(120.0, 126.632, functionB);
         newtonRaphsonMethod(125.0, 126.632, functionB);
@@ -343,7 +343,7 @@ public class Project3_jsiwiecki
             // Next iteration, a will be the new value to test
             a = c;
 
-            if (error > approximation)
+            if (approximation <= error)
             {
                 done = true;
             }

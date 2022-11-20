@@ -34,7 +34,7 @@ public class Project3_jsiwiecki
     {
         // bisectionTests();
         // newtonRaphsonTests();
-        secantTests();
+        // secantTests();
         // falsePositionTests();
     }
 

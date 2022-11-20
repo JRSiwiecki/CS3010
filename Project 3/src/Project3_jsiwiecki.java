@@ -61,9 +61,9 @@ public class Project3_jsiwiecki
         newtonRaphsonMethod(2.0, 1.922, functionA);
         newtonRaphsonMethod(3.0, 3.563, functionA);
 
-        newtonRaphsonMethod(120.0, 126.632, functionB);
         newtonRaphsonMethod(125.0, 126.632, functionB);
-        newtonRaphsonMethod(130.0, 126.632, functionB);
+        newtonRaphsonMethod(126.0, 126.632, functionB);
+        newtonRaphsonMethod(127.0, 126.632, functionB);
     }
     
     /**
@@ -343,7 +343,7 @@ public class Project3_jsiwiecki
             // Next iteration, a will be the new value to test
             a = c;
 
-            if (approximation <= error)
+            if (error > approximation)
             {
                 done = true;
             }

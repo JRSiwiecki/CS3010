@@ -5,18 +5,19 @@
  *         Date: 12/4/22
  */
 
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.util.ArrayList;
+
 public class Project4_jsiwiecki
 {
     private static double[][] dividedDifferenceTable;
+    private static ArrayList<Double> coefficientsList;
     
     public static void main(String[] args) throws IOException 
     {
@@ -40,9 +41,6 @@ public class Project4_jsiwiecki
         String[] dataLineOne = buffer.readLine().split(" ");
         String[] dataLineTwo = buffer.readLine().split(" ");
 
-        System.out.println(Arrays.toString(dataLineOne));
-        System.out.println(Arrays.toString(dataLineTwo));
-
         if (dataLineOne.length != dataLineTwo.length)
         {
             System.out.println("Input data lengths do not match.");
@@ -63,5 +61,24 @@ public class Project4_jsiwiecki
         }
 
         buffer.close();
+    }
+
+    public static void getCoefficients()
+    {
+        for (int row = 2; row < dividedDifferenceTable[0].length; row++)
+        {
+            for (int col = 0; col < dividedDifferenceTable[0].length - row; col++)
+            {
+                dividedDifferenceTable[col][row] = 
+                (dividedDifferenceTable[col + 1][row - 1] - dividedDifferenceTable[col][row - 1]) 
+                / 
+                (dividedDifferenceTable[col + (row - 1)][0] - dividedDifferenceTable[col][0]);
+            }
+        }
+
+        for (int i = 0; i < dividedDifferenceTable[0].length; i++)
+        {
+            coefficientsList.add(dividedDifferenceTable[0][i]);
+        }
     }
 }

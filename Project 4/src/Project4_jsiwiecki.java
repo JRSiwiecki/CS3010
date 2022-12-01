@@ -2,7 +2,7 @@
  * @author Joseph Siwiecki
  *         Assignment: Programming Project 4
  *         Class: CS 3010.01
- *         Date: 12/4/22
+ *         Date: 12/1/22
  */
 
 import java.io.IOException;
@@ -14,14 +14,32 @@ import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 
+
 public class Project4_jsiwiecki
 {
+    /**
+     * @param xValues Holds the xValues of the input data as strings.
+     * @param fValues Holds the f(x) values of the input data as strings.
+     * @param rawDividedDifferenceTable Newton's divided difference table as a 2D double array.
+     * @param coefficientList Holds the coefficients found when calculating the divided difference table.
+     * @param cleanDividedDifferenceTable Newton's divided difference table but as a 2D string array for easy viewing.
+     */
     private static String[] xValues;
     private static String[] fValues;
     private static double[][] rawDividedDifferenceTable;
     private static ArrayList<Double> coefficientsList = new ArrayList<Double>();
     private static String[][] cleanDividedDifferenceTable;
     
+    
+    
+    /**
+     * Gets file name and opens the file.
+     * Retrieves x and f values from file and places them into xValues, fValues,
+     * and rawDividedDifference table. Then prints out the table and various
+     * polynomials.
+     * 
+     * @throws IOException In case file can't be found.
+     */
     public static void main(String[] args) throws IOException 
     {
         String fileName = "";
@@ -41,6 +59,12 @@ public class Project4_jsiwiecki
         input.close();
     }
 
+    /**
+     * Gets x and f values from input file and and place them in respective arrays and matrices.
+     * 
+     * @param fileName Name of the file specified by the user and sent from main function.
+     * @throws IOException In case file not found.
+     */
     private static void getXValues(String fileName) throws IOException
     {
         FileInputStream dataFile = new FileInputStream(fileName);
@@ -75,6 +99,11 @@ public class Project4_jsiwiecki
         buffer.close();
     }
 
+    /**
+     * Solves the divided difference table in rawDividedDifferenceTable 
+     * as well as retrieves the coefficients and places
+     * them into coefficientsList.
+     */
     private static void solveTableAndGetCoefficients()
     {
         for (int row = 2; row < rawDividedDifferenceTable[0].length; row++)
@@ -88,12 +117,18 @@ public class Project4_jsiwiecki
             }
         }
 
+        // Coefficients are the top value in each column except for the first column.
         for (int i = 1; i < rawDividedDifferenceTable[0].length; i++)
         {
             coefficientsList.add(rawDividedDifferenceTable[0][i]);
         }
     }
 
+    /**
+     * Prints the divided difference table in a much neater way by creating
+     * new cleanUpDividedDifferenceTable, which instead uses a 
+     * 2D string matrix.
+     */
     private static void cleanUpDividedDifferenceTable()
     {
         int tableLengthWithSpaces = 2 * rawDividedDifferenceTable.length;
@@ -134,6 +169,9 @@ public class Project4_jsiwiecki
         }
     }
 
+    /**
+     * Prints the cleanDividedDifferenceTable.
+     */
     private static void printDividedDifferenceTable() 
     {
         System.out.println("----- Divided Difference Table -----\n");
@@ -148,23 +186,22 @@ public class Project4_jsiwiecki
             System.out.println();
         }
     }
-
-    private static double roundNumber(double value)
-    {
-        return (double) Math.round(value * 1000) / 1000;
-    }
     
+    /**
+     * Prints the interpolated polynomial in Newton's form.
+     */
     private static void printNewtonPolynomial()
     {
         System.out.println("----- Newton's Polynomial -----\n");
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> xList = new ArrayList<String>();
         String polynomial = "";
 
         for (int i = 0; i < rawDividedDifferenceTable.length - 1; i++)
         {
             double currentValue = rawDividedDifferenceTable[i][0];
 
+            // Formatting checks
             if (currentValue < 0)
             {
                 polynomial = " + ";
@@ -175,20 +212,22 @@ public class Project4_jsiwiecki
                 polynomial = " - ";
             }
 
-            if (roundNumber(currentValue) == 0) 
+            double roundedValue = Math.round(currentValue * 1000) / 1000;
+            
+            if (roundedValue == 0) 
             {
-                list.add("(x)");
+                xList.add("(x)");
             }
 
             else
             {
-                list.add(String.format("(x%s%.2f)", polynomial, currentValue));
+                xList.add(String.format("(x%s%.2f)", polynomial, currentValue));
             }
         }
 
         String fullPolynomial = String.format("%.2f", coefficientsList.get(0));
 
-        for (int i = 1; i < list.size() + 1; i++)
+        for (int i = 1; i < xList.size() + 1; i++)
         {
             double currentValue = coefficientsList.get(i);
 
@@ -206,7 +245,7 @@ public class Project4_jsiwiecki
 
             for (int j = 0; j < i; j++)
             {
-                value += list.get(j);
+                value += xList.get(j);
             }
 
             fullPolynomial += String.format(" %s %.2f%s", polynomial, Math.abs(currentValue), value);
@@ -215,6 +254,9 @@ public class Project4_jsiwiecki
         System.out.println(fullPolynomial + "\n");
     }
 
+    /**
+     * Prints interpolated polynomial in Lagrange's form.
+     */
     private static void printLagrangePolynomial()
     {
         System.out.println("----- Lagrange's Polynomial -----\n");
@@ -281,6 +323,9 @@ public class Project4_jsiwiecki
         System.out.println("\n");
     }
     
+    /**
+     * Prints interpolated polynomial in simplified form. 
+     */
     private static void printSimplifiedPolynomial()
     {
         System.out.println("----- Simplified Polynomial -----\n");
@@ -312,29 +357,35 @@ public class Project4_jsiwiecki
         }
 
         polynomialCoefficients = polynomial.simplifyCoefficientList(matrix);
-        System.out.println(toString(polynomialCoefficients));
+        System.out.println(convertPolynomialCoefficientsToString(polynomialCoefficients));
     }
 
-    private static String toString(ArrayList<Double> list)
+    /**
+     * Converts a given list of coefficients to a string that is easier to digest.
+     * 
+     * @param list List of coefficients.
+     * @return Coefficients as a simple string.
+     */
+    private static String convertPolynomialCoefficientsToString(ArrayList<Double> list)
     {
         String formattedString = "";
         String power = "";
 
         for (int i = 0; i < list.size(); i++)
         {
-            Double num = list.get(i);
+            Double currentCoefficient = list.get(i);
             power = String.format("x^%d", i);
 
-            if (num != 0)
+            if (currentCoefficient != 0)
             {
-                if (num == 0)
+                if (currentCoefficient == 0)
                 {
-                    formattedString += String.format(" %+.2f", num);
+                    formattedString += String.format(" %+.2f", currentCoefficient);
                 }
 
                 else
                 {
-                    formattedString += String.format(" %+.2f%s", num, power);
+                    formattedString += String.format(" %+.2f%s", currentCoefficient, power);
                 }
             }
         }
@@ -343,9 +394,22 @@ public class Project4_jsiwiecki
     }
 }
 
+/**
+ * Helper class meant to perform common polynomial operations.
+ * Mainly used by printSimplifiedPolynomial function.
+ */
 class Polynomial 
 {
-    public ArrayList<Double> expandPolynomial(double num, ArrayList<Double> coefficients, int length)
+    
+    /**
+     * Calculates expanded polynomial given starting value, list of coefficients, and length.
+     * 
+     * @param startingValue The value to begin the expanded polynomial.
+     * @param coefficients The coefficient values.
+     * @param length The length of the original list.
+     * @return New ArrayList<Double> containing the expanded polynomial values.
+     */
+    public ArrayList<Double> expandPolynomial(double startingValue, ArrayList<Double> coefficients, int length)
     {
         ArrayList<ArrayList<Double>> matrix = new ArrayList<ArrayList<Double>>();
         ArrayList<Double> newList = new ArrayList<Double>();
@@ -355,12 +419,12 @@ class Polynomial
             newList.add(0.0);
         }
         
-        newList.add(0, num);
+        newList.add(0, startingValue);
         
         for (int i = 0; i < coefficients.size(); i++)
         {
             matrix.add(addNewCoefficient(newList));
-            matrix.add(multiplyByX(newList, -coefficients.get(i)));
+            matrix.add(multiplyByFactor(newList, -coefficients.get(i)));
             newList = simplifyCoefficientList(matrix);
             matrix.clear();
         }
@@ -375,6 +439,12 @@ class Polynomial
         return newList;
     }
 
+    /**
+     * Simplify a matrix comprised of ArrayList<ArrayList<Double>> to be on list of coefficients.
+     * 
+     * @param originalList The original matrix.
+     * @return New ArrayList<Double> containing the coefficients.
+     */
     public ArrayList<Double> simplifyCoefficientList(ArrayList<ArrayList<Double>> originalList) 
     {
         ArrayList<Double> newList = new ArrayList<Double>();
@@ -394,6 +464,13 @@ class Polynomial
         return newList;
     }
 
+    /**
+     * Creates a new ArrayList<Double> using the originalList. 
+     * Mainly used in expandPolynomial to simplify adding a list of coefficients.
+     * 
+     * @param originalList The original coefficientList
+     * @return The new coefficientList as an ArrayList<Double>
+     */
     private ArrayList<Double> addNewCoefficient(ArrayList<Double> originalList)
     {
         ArrayList<Double> newList = new ArrayList<Double>();
@@ -408,13 +485,20 @@ class Polynomial
         return newList;
     }
 
-    private ArrayList<Double> multiplyByX(ArrayList<Double> originalList, double x)
+    /**
+     * Multiplies entire originalList of doubles by a given value and returns modified list.
+     * 
+     * @param originalList The original list of coefficients.
+     * @param factor The value to multiply every element in the list by.
+     * @return The modified ArrayList<Double> with updated values.
+     */
+    private ArrayList<Double> multiplyByFactor(ArrayList<Double> originalList, double factor)
     {
         ArrayList<Double> newList = new ArrayList<Double>();
 
         for (int i = 0; i < originalList.size(); i++)
         {
-            newList.add(originalList.get(i) * x);
+            newList.add(originalList.get(i) * factor);
         }
 
         return newList;

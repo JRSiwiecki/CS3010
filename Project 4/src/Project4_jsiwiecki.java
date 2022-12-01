@@ -33,7 +33,7 @@ public class Project4_jsiwiecki
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
         printNewtonPolynomial();
-        printLagrangePolynomial();
+        printSimplifiedPolynomial();
 
         input.close();
     }
@@ -84,7 +84,7 @@ public class Project4_jsiwiecki
             }
         }
 
-        for (int i = 0; i < rawDividedDifferenceTable[0].length; i++)
+        for (int i = 1; i < rawDividedDifferenceTable[0].length; i++)
         {
             coefficientsList.add(rawDividedDifferenceTable[0][i]);
         }
@@ -211,7 +211,7 @@ public class Project4_jsiwiecki
         System.out.println(fullPolynomial + "\n");
     }
 
-    private static void printLagrangePolynomial()
+    private static void printSimplifiedPolynomial()
     {
         System.out.println("----- Simplified Polynomial -----\n");
 

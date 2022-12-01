@@ -33,11 +33,12 @@ public class Project4_jsiwiecki
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
         printNewtonInterpolatingPolynomial();
+        printLagrangeInterpolatingPolynomial();
 
         input.close();
     }
 
-    public static void getXValues(String fileName) throws IOException
+    private static void getXValues(String fileName) throws IOException
     {
         FileInputStream dataFile = new FileInputStream(fileName);
         DataInputStream dataInput = new DataInputStream(dataFile);
@@ -46,6 +47,8 @@ public class Project4_jsiwiecki
         String[] dataLineOne = buffer.readLine().split(" ");
         String[] dataLineTwo = buffer.readLine().split(" ");
 
+        
+        
         if (dataLineOne.length != dataLineTwo.length)
         {
             System.out.println("Input data lengths do not match.");
@@ -53,7 +56,7 @@ public class Project4_jsiwiecki
             return;
         }
 
-        rawDividedDifferenceTable = new double[dataLineOne.length][dataLineTwo.length];
+        rawDividedDifferenceTable = new double[dataLineOne.length][dataLineTwo.length + 1];
 
         for (int i = 0; i < dataLineOne.length; i++)
         {
@@ -68,7 +71,7 @@ public class Project4_jsiwiecki
         buffer.close();
     }
 
-    public static void solveTableAndGetCoefficients()
+    private static void solveTableAndGetCoefficients()
     {
         for (int row = 2; row < rawDividedDifferenceTable[0].length; row++)
         {
@@ -87,7 +90,7 @@ public class Project4_jsiwiecki
         }
     }
 
-    public static void cleanUpDividedDifferenceTable()
+    private static void cleanUpDividedDifferenceTable()
     {
         int tableLengthWithSpaces = 2 * rawDividedDifferenceTable.length;
         int originalTableLength = rawDividedDifferenceTable[0].length;
@@ -127,7 +130,7 @@ public class Project4_jsiwiecki
         }
     }
 
-    public static void printDividedDifferenceTable() 
+    private static void printDividedDifferenceTable() 
     {
         System.out.println("----- Divided Difference Table -----\n");
 
@@ -142,12 +145,12 @@ public class Project4_jsiwiecki
         }
     }
 
-    public static double roundNumber(double value)
+    private static double roundNumber(double value)
     {
         return (double) Math.round(value * 1000) / 1000;
     }
     
-    public static void printNewtonInterpolatingPolynomial()
+    private static void printNewtonInterpolatingPolynomial()
     {
         System.out.println("----- Newton's Interpolating Polynomial -----\n");
 
@@ -208,14 +211,66 @@ public class Project4_jsiwiecki
         System.out.println(fullPolynomial);
     }
 
-    public static void printLagrangeInterpolatingPolynomial()
+    private static void printLagrangeInterpolatingPolynomial()
     {
         System.out.println("----- Lagrange's Interpolating Polynomial -----");
 
-        
+        Polynomial polynomial = new Polynomial();
+
+        ArrayList<Double> polynomialCoefficients = new ArrayList<Double>();
+        ArrayList<ArrayList<Double>> matrix = new ArrayList<ArrayList<Double>>();
+
+        for (int i = 0; i < rawDividedDifferenceTable[0].length - 1; i++)
+        {
+            polynomialCoefficients.add(0.0);
+        }
+
+        polynomialCoefficients.add(0, coefficientsList.get(0));
+        matrix.add(polynomialCoefficients);
+
+        for (int i = 1; i < coefficientsList.size(); i++)
+        {
+            polynomialCoefficients = new ArrayList<Double>();
+            double currentCoefficient = coefficientsList.get(i);
+
+            for (int j = 0; j < i; j++)
+            {
+                polynomialCoefficients.add(rawDividedDifferenceTable[j][0]);
+            }
+            
+            matrix.add(polynomial.expandPolynomial(currentCoefficient, polynomialCoefficients, rawDividedDifferenceTable[0].length));
+        }
+
+        polynomialCoefficients = polynomial.simplifyCoefficientList(matrix);
+        System.out.println(toString(polynomialCoefficients));
     }
 
+    private static String toString(ArrayList<Double> list)
+    {
+        String formattedString = "";
+        String power = "";
 
+        for (int i = 0; i < list.size(); i++)
+        {
+            Double num = list.get(i);
+            power = String.format("x^%d", i);
+
+            if (num != 0)
+            {
+                if (num == 0)
+                {
+                    formattedString += String.format(" %+.2f", num);
+                }
+
+                else
+                {
+                    formattedString += String.format(" %+.2f%s", num, power);
+                }
+            }
+        }
+
+        return formattedString;
+    }
 }
 
 class Polynomial 
@@ -226,6 +281,11 @@ class Polynomial
         ArrayList<Double> newCoefficients = new ArrayList<Double>();
 
         for (int i = 0; i < coefficients.size() + 1; i++)
+        {
+            newCoefficients.add(0.0);
+        }
+        
+        for (int i = 0; i < coefficients.size(); i++)
         {
             matrix.add(addNewCoefficient(newCoefficients));
             matrix.add(multiplyByX(newCoefficients, -coefficients.get(i)));
@@ -241,6 +301,24 @@ class Polynomial
         }
 
         return newCoefficients;
+    }
+
+    public ArrayList<Double> simplifyCoefficientList(ArrayList<ArrayList<Double>> originalList) 
+    {
+        ArrayList<Double> simplifiedCoefficientList = new ArrayList<Double>();
+
+        for (int i = 0; i < originalList.get(0).size(); i++) 
+        {
+            double sumOfList = 0.0;
+
+            for (int j = 0; j < originalList.size(); j++) 
+            {
+                sumOfList += originalList.get(j).get(i);
+            }
+            simplifiedCoefficientList.add(sumOfList);
+        }
+
+        return simplifiedCoefficientList;
     }
 
     private ArrayList<Double> addNewCoefficient(ArrayList<Double> originalList)
@@ -267,23 +345,5 @@ class Polynomial
         }
 
         return newList;
-    }
-
-    private ArrayList<Double> simplifyCoefficientList(ArrayList<ArrayList<Double>> originalList)
-    {
-        ArrayList<Double> simplifiedCoefficientList = new ArrayList<Double>();
-
-        for (int i = 0; i < originalList.get(0).size(); i++)
-        {
-            double sumOfList = 0.0;
-
-            for (int j = 0; j < originalList.size(); j++)
-            {
-                sumOfList += originalList.get(j).get(i);
-            }
-            simplifiedCoefficientList.add(sumOfList);
-        }
-
-        return simplifiedCoefficientList;
     }
 }

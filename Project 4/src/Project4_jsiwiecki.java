@@ -32,6 +32,7 @@ public class Project4_jsiwiecki
         solveTableAndGetCoefficients();
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
+        printInterpolatingPolynomial();
 
         input.close();
     }
@@ -141,5 +142,69 @@ public class Project4_jsiwiecki
         }
     }
 
+    public static double roundNumber(double value)
+    {
+        return (double) Math.round(value * 1000) / 1000;
+    }
     
+    public static void printInterpolatingPolynomial()
+    {
+        System.out.println("Interpolating Polynomial: ");
+
+        ArrayList<String> list = new ArrayList<String>();
+        String polynomial = "";
+
+        for (int i = 0; i < rawDividedDifferenceTable.length - 1; i++)
+        {
+            double currentValue = rawDividedDifferenceTable[i][0];
+
+            if (currentValue < 0)
+            {
+                polynomial = "+";
+            }
+
+            else if (currentValue > 0)
+            {
+                polynomial = "-";
+            }
+
+            if (roundNumber(currentValue) == 0) 
+            {
+                list.add("(x)");
+            }
+
+            else
+            {
+                list.add(String.format("(x%s%.2f)", polynomial, currentValue));
+            }
+        }
+
+        String fullPolynomial = String.format("%.2f", coefficientsList.get(0));
+
+        for (int i = 1; i < list.size() + 1; i++)
+        {
+            double currentValue = coefficientsList.get(i);
+
+            if (currentValue != 0)
+            {
+                polynomial = "+";
+            }
+
+            else
+            {
+                polynomial = "-";
+            }
+
+            String value = "";
+
+            for (int j = 0; j < i; j++)
+            {
+                value += list.get(j);
+            }
+
+            fullPolynomial += String.format(" %s %.2f%s", polynomial, Math.abs(currentValue), value);
+        }
+
+        System.out.println(fullPolynomial);
+    }
 }

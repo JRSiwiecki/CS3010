@@ -32,8 +32,8 @@ public class Project4_jsiwiecki
         solveTableAndGetCoefficients();
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
-        printNewtonInterpolatingPolynomial();
-        printLagrangeInterpolatingPolynomial();
+        printNewtonPolynomial();
+        printLagrangePolynomial();
 
         input.close();
     }
@@ -150,9 +150,9 @@ public class Project4_jsiwiecki
         return (double) Math.round(value * 1000) / 1000;
     }
     
-    private static void printNewtonInterpolatingPolynomial()
+    private static void printNewtonPolynomial()
     {
-        System.out.println("----- Newton's Interpolating Polynomial -----\n");
+        System.out.println("----- Newton's Polynomial -----\n");
 
         ArrayList<String> list = new ArrayList<String>();
         String polynomial = "";
@@ -208,12 +208,12 @@ public class Project4_jsiwiecki
             fullPolynomial += String.format(" %s %.2f%s", polynomial, Math.abs(currentValue), value);
         }
 
-        System.out.println(fullPolynomial);
+        System.out.println(fullPolynomial + "\n");
     }
 
-    private static void printLagrangeInterpolatingPolynomial()
+    private static void printLagrangePolynomial()
     {
-        System.out.println("----- Lagrange's Interpolating Polynomial -----");
+        System.out.println("----- Simplified Polynomial -----\n");
 
         Polynomial polynomial = new Polynomial();
 
@@ -278,34 +278,36 @@ class Polynomial
     public ArrayList<Double> expandPolynomial(double num, ArrayList<Double> coefficients, int length)
     {
         ArrayList<ArrayList<Double>> matrix = new ArrayList<ArrayList<Double>>();
-        ArrayList<Double> newCoefficients = new ArrayList<Double>();
+        ArrayList<Double> newList = new ArrayList<Double>();
 
         for (int i = 0; i < coefficients.size() + 1; i++)
         {
-            newCoefficients.add(0.0);
+            newList.add(0.0);
         }
+        
+        newList.add(0, num);
         
         for (int i = 0; i < coefficients.size(); i++)
         {
-            matrix.add(addNewCoefficient(newCoefficients));
-            matrix.add(multiplyByX(newCoefficients, -coefficients.get(i)));
-            newCoefficients = simplifyCoefficientList(matrix);
+            matrix.add(addNewCoefficient(newList));
+            matrix.add(multiplyByX(newList, -coefficients.get(i)));
+            newList = simplifyCoefficientList(matrix);
             matrix.clear();
         }
 
-        int newCoefficientsSize = newCoefficients.size();
+        int newCoefficientsSize = newList.size();
 
         for (int i = 0; i < length - newCoefficientsSize; i++)
         {
-            newCoefficients.add(0.0);
+            newList.add(0.0);
         }
 
-        return newCoefficients;
+        return newList;
     }
 
     public ArrayList<Double> simplifyCoefficientList(ArrayList<ArrayList<Double>> originalList) 
     {
-        ArrayList<Double> simplifiedCoefficientList = new ArrayList<Double>();
+        ArrayList<Double> newList = new ArrayList<Double>();
 
         for (int i = 0; i < originalList.get(0).size(); i++) 
         {
@@ -315,10 +317,11 @@ class Polynomial
             {
                 sumOfList += originalList.get(j).get(i);
             }
-            simplifiedCoefficientList.add(sumOfList);
+            
+            newList.add(sumOfList);
         }
 
-        return simplifiedCoefficientList;
+        return newList;
     }
 
     private ArrayList<Double> addNewCoefficient(ArrayList<Double> originalList)

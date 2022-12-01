@@ -29,7 +29,7 @@ public class Project4_jsiwiecki
         fileName = input.nextLine();
         
         getXValues(fileName);
-        getCoefficients();
+        solveTableAndGetCoefficients();
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
 
@@ -67,7 +67,7 @@ public class Project4_jsiwiecki
         buffer.close();
     }
 
-    public static void getCoefficients()
+    public static void solveTableAndGetCoefficients()
     {
         for (int row = 2; row < rawDividedDifferenceTable[0].length; row++)
         {
@@ -86,26 +86,11 @@ public class Project4_jsiwiecki
         }
     }
 
-    public static void printDividedDifferenceTable()
-    {
-        System.out.println("----- Divided Difference Table -----\n");
-
-        for (int row = 0; row < cleanDividedDifferenceTable.length; row++)
-        {
-            for (int col = 0; col < cleanDividedDifferenceTable[0].length; col++)
-            {
-                System.out.print(cleanDividedDifferenceTable[row][col] + " ");
-            }
-            
-            System.out.println();
-        }
-    }
-
     public static void cleanUpDividedDifferenceTable()
     {
-        int num1 = 2 * rawDividedDifferenceTable.length;
-        int num2 = rawDividedDifferenceTable[0].length;
-        cleanDividedDifferenceTable = new String[num1][num2];
+        int tableLengthWithSpaces = 2 * rawDividedDifferenceTable.length;
+        int originalTableLength = rawDividedDifferenceTable[0].length;
+        cleanDividedDifferenceTable = new String[tableLengthWithSpaces][originalTableLength];
         
         for (int i = 0; i < cleanDividedDifferenceTable.length; i++) 
         {
@@ -115,28 +100,46 @@ public class Project4_jsiwiecki
             }
         }
         
-        int num = 0;
+        int spaceLength = 0;
+
         for (int i = 0; i < rawDividedDifferenceTable.length; i++) 
         {
-            cleanDividedDifferenceTable[num][0] = String.format("%6.2f", rawDividedDifferenceTable[i][0]);
-            num += 2;
+            cleanDividedDifferenceTable[spaceLength][0] = String.format("%6.2f", rawDividedDifferenceTable[i][0]);
+            spaceLength += 2;
         }
         
-        num = 0;
-        
+        spaceLength = 0;
+
         for (int i = 0; i < rawDividedDifferenceTable.length; i++) 
         {
-            cleanDividedDifferenceTable[num][1] = String.format("%6.2f", rawDividedDifferenceTable[i][1]);
-            num += 2;
+            cleanDividedDifferenceTable[spaceLength][1] = String.format("%6.2f", rawDividedDifferenceTable[i][1]);
+            spaceLength += 2;
         }
         
-        for (int i = 2; i < num2; i++) 
+        for (int i = 2; i < originalTableLength; i++) 
         {
-            num = (i - 1);
-            for (int j = 0; j < num2 - i; j++) {
-                cleanDividedDifferenceTable[num][i] = String.format("%6.2f", rawDividedDifferenceTable[j][i]);
-                num += 2;
+            spaceLength = (i - 1);
+            for (int j = 0; j < originalTableLength - i; j++) {
+                cleanDividedDifferenceTable[spaceLength][i] = String.format("%6.2f", rawDividedDifferenceTable[j][i]);
+                spaceLength += 2;
             }
         }
     }
+
+    public static void printDividedDifferenceTable() 
+    {
+        System.out.println("----- Divided Difference Table -----\n");
+
+        for (int row = 0; row < cleanDividedDifferenceTable.length; row++) 
+        {
+            for (int col = 0; col < cleanDividedDifferenceTable[0].length; col++) 
+            {
+                System.out.print(cleanDividedDifferenceTable[row][col] + " ");
+            }
+
+            System.out.println();
+        }
+    }
+
+    
 }

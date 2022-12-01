@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class Project4_jsiwiecki
 {
+    private static String[] xValues;
+    private static String[] fValues;
     private static double[][] rawDividedDifferenceTable;
     private static ArrayList<Double> coefficientsList = new ArrayList<Double>();
     private static String[][] cleanDividedDifferenceTable;
@@ -33,6 +35,7 @@ public class Project4_jsiwiecki
         cleanUpDividedDifferenceTable();
         printDividedDifferenceTable();
         printNewtonPolynomial();
+        printLagrangePolynomial();
         printSimplifiedPolynomial();
 
         input.close();
@@ -47,7 +50,8 @@ public class Project4_jsiwiecki
         String[] dataLineOne = buffer.readLine().split(" ");
         String[] dataLineTwo = buffer.readLine().split(" ");
 
-        
+        xValues = dataLineOne.clone();
+        fValues = dataLineTwo.clone();
         
         if (dataLineOne.length != dataLineTwo.length)
         {
@@ -163,12 +167,12 @@ public class Project4_jsiwiecki
 
             if (currentValue < 0)
             {
-                polynomial = "+";
+                polynomial = " + ";
             }
 
             else if (currentValue > 0)
             {
-                polynomial = "-";
+                polynomial = " - ";
             }
 
             if (roundNumber(currentValue) == 0) 
@@ -211,6 +215,72 @@ public class Project4_jsiwiecki
         System.out.println(fullPolynomial + "\n");
     }
 
+    private static void printLagrangePolynomial()
+    {
+        System.out.println("----- Lagrange's Polynomial -----\n");
+
+        for (int i = 0; i < fValues.length; i++)
+        {
+            // print coefficient
+            System.out.print(fValues[i] + " * (");
+            
+            // print numerator
+            for (int j = 0; j < xValues.length; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                
+                else if (Double.parseDouble(xValues[j]) < 0.0)
+                {
+                    System.out.print("(x + " + Math.abs(Double.parseDouble(xValues[j])) + ")");
+                }
+
+                else
+                {
+                    System.out.print("(x - " + xValues[j] + ")");
+                }
+            }
+            
+            System.out.print(" / ");
+
+            // print denominator
+            for (int j = 0; j < fValues.length; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                
+                else if (Double.parseDouble(xValues[j]) < 0.0)
+                {
+                    System.out.print("(" + xValues[i] + " + " + Math.abs(Double.parseDouble(xValues[j])) + ")");
+                }
+
+                else
+                {
+                    System.out.print("(" + xValues[i] + " - " + xValues[j] + ")");
+                }
+                
+               
+            }
+            
+            
+            System.out.print(") ");
+            
+            // prevent off by one error through short-circuiting
+            if (i < fValues.length - 1 && Double.parseDouble(fValues[i + 1]) > 0.0)
+            {
+                System.out.print("+");
+            }
+
+            System.out.print(" ");
+        }
+
+        System.out.println("\n");
+    }
+    
     private static void printSimplifiedPolynomial()
     {
         System.out.println("----- Simplified Polynomial -----\n");

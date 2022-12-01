@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Project4_jsiwiecki
 {
     private static double[][] dividedDifferenceTable;
-    private static ArrayList<Double> coefficientsList;
+    private static ArrayList<Double> coefficientsList = new ArrayList<Double>();
     
     public static void main(String[] args) throws IOException 
     {
@@ -28,6 +28,8 @@ public class Project4_jsiwiecki
         fileName = input.nextLine();
         
         getXValues(fileName);
+        getCoefficients();
+        printDividedDifferenceTable();
 
         input.close();
     }
@@ -79,6 +81,21 @@ public class Project4_jsiwiecki
         for (int i = 0; i < dividedDifferenceTable[0].length; i++)
         {
             coefficientsList.add(dividedDifferenceTable[0][i]);
+        }
+    }
+
+    public static void printDividedDifferenceTable()
+    {
+        System.out.println("----- Divided Difference Table -----");
+
+        for (int row = 0; row < dividedDifferenceTable.length; row++)
+        {
+            for (int col = 0; col < dividedDifferenceTable[0].length; col++)
+            {
+                System.out.print(dividedDifferenceTable[row][col] + " ");
+            }
+            
+            System.out.println();
         }
     }
 }
